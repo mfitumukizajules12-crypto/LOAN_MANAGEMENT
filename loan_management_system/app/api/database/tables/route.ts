@@ -1,10 +1,10 @@
-import databaseConnection from "@/app/config/db";
+import databaseConnection from "@/app/lib/db";
 import { RowDataPacket } from "mysql2";
 import { NextRequest, NextResponse } from "next/server";
 
 
 
-export async function checkTable() {
+export async function GET() {
 
     try {
 
@@ -26,6 +26,6 @@ export async function checkTable() {
         } , { status : 500})
 
         console.log("An error occured befoer we could test the api \n", error)
-        throw new Error("Failed Please try again later !")
+        // throw new Error("Failed Please try again later !")
     }
 }
