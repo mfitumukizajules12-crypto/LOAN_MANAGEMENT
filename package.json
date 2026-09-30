@@ -16,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/mfitumukizajules12-crypto/LOAN_MANAGEMENT/issues"
   },
-  "homepage": "https://github.com/mfitumukizajules12-crypto/LOAN_MANAGEMENT#readme"
+  "homepage": "https://github.com/mfitumukizajules12-crypto/LOAN_MANAGEMENT#readme",
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.9.1"
+  }
 }
