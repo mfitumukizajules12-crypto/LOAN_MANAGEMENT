@@ -1,46 +1,55 @@
-import databaseConnection from "@/app/lib/db";
-import { newUser } from "@/app/types/user";
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcrypt"
-import { success } from "zod";
-
+import { validateCreateUser } from "@/app/lib/validation/custom";
+import databaseConnection from "@/app/lib/db";
+import bcrypt from "bcrypt";
 
 export async function POST(req: NextRequest) {
-
-    const user: newUser = await req.json();
-
     try {
-        if (!user.staffId || !user.role) {
-            NextResponse.json({
-                message: "Please all fields are requires."
-            }, { status: 401 })
-        };
+        const body = await req.json();
 
-        const hashedPassword = await bcrypt.hash(user.password, 10)
+        // 1. Run custom validation
+        const { isValid, errors } = validateCreateUser(body);
 
-        const [saveUser] = await databaseConnection.query("INSERT INTO users WHERE ()" , [user.name , user.email , user.role , hashedPassword , user.active , user.staffId]);
-
-        if(saveUser){
-            NextResponse.json({
-                message : "User created successfully ." ,
-                success : true ,
-                data : [...saveUser]
-            } , {status : 200});
+        if (!isValid) {
+            return NextResponse.json(
+                {
+                    message: "Validation failed. Missing or invalid fields.",
+                    errors,
+                },
+                { status: 400 }
+            );
         }
 
+        const { staffId, name, email, password, role} = body;
 
+        // 2. Hash password securely
+        const hashedPassword = await bcrypt.hash(password, 10);
 
+        // 3. Save to MySQL Database
+        const [result]: any = await databaseConnection.query(
+            "INSERT INTO users (staff_id, username, email, password, role) VALUES (?, ?, ?, ?, ?)",
+            [staffId, name, email, hashedPassword, role]
+        );
+
+        return NextResponse.json(
+            {
+                message: "User created successfully",
+                success: true,
+                data: {
+                    id: result.insertId,
+                    staffId,
+                    email,
+                    role,
+                },
+            },
+            { status: 201 }
+        );
 
     } catch (error: any) {
-
-        console.log(error);
-
-        NextResponse.json({
-            message: "Something went wrong."
-        }, { status: 500 })
-
+        console.error("User creation error:", error);
+        return NextResponse.json(
+            { message: "Internal server error" },
+            { status: 500 }
+        );
     }
-
-
-
 }
