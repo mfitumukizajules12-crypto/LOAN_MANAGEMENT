@@ -1,31 +1,25 @@
-import databaseConnection from "@/app/lib/db";
+import { NextResponse } from "next/server";
+import databaseConnection from "@/app/lib/db"; // Update path relative to your lib directory
 import { RowDataPacket } from "mysql2";
-import { NextRequest, NextResponse } from "next/server";
-
-
 
 export async function GET() {
+  try {
+    const [rows] = await databaseConnection.query<RowDataPacket[]>("SHOW TABLES;");
 
-    try {
+    return NextResponse.json(
+      { success: true, tables: rows },
+      { status: 200 }
+    );
+  } catch (error: any) {
+    console.error("Database connection error:", error);
 
-        const [rows] = await databaseConnection.query<RowDataPacket[]>(
-            "SHOW TABLES;"
-        );
-
-        return NextResponse.json({
-            sucess: true,
-            tables: rows
-        } , {status : 200})
-
-
-    } catch (error: any) {
-
-        NextResponse.json({
-            success : false ,
-            message : "Failed to fetch your table rows try again later sir"
-        } , { status : 500})
-
-        console.log("An error occured befoer we could test the api \n", error)
-        // throw new Error("Failed Please try again later !")
-    }
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Failed to connect to the database",
+        details: error.message || error.code || "Unknown error",
+      },
+      { status: 500 }
+    );
+  }
 }
