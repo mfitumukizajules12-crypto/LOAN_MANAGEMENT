@@ -12,10 +12,7 @@ export function validateCreateUser(data: any) {
         };
     }
 
-    // Validate staffId
-    if (!data.staffId || typeof data.staffId !== "string" || !data.staffId.trim()) {
-        errors.staffId = "Staff ID is required";
-    }
+
 
     // Validate name
     if (!data.name || typeof data.name !== "string" || !data.name.trim()) {
@@ -43,4 +40,38 @@ export function validateCreateUser(data: any) {
         isValid: Object.keys(errors).length === 0,
         errors,
     };
+
+
+
+
+};
+
+//validate to find the user by id
+export function validateFindingUser(data: any) {
+
+    const errors: Record<string, string> = {}
+
+    //     / id?: string | undefined;
+    // name?: string | undefined;
+    // email?: string | undefined;
+    if (!data || typeof data !== "object") {
+        return {
+            isvalid: false,
+            errors: { body: "Invalid Data entered, try again" }
+        };
+    }
+
+    if (!data.identifier || !data.password) {
+        return {
+            errors: "All fields are required ."
+        }
+    }
+
+
+
+    return {
+        isValid: Object.keys(errors).length === 0,
+        errors
+    }
+
 }

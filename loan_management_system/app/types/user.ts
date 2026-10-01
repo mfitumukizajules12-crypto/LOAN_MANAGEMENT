@@ -9,4 +9,10 @@ export interface newUser {
     role: UserRole;
     active: boolean;
     password:string;
+};
+
+export interface userId {
+    id?: string;
+    name?:string;
+    email?:string;
 }
