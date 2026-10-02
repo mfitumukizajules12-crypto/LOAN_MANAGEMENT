@@ -24,8 +24,10 @@ export async function POST(req: NextRequest) {
         const searchUserSQL = `
     
         SELECT 
+        staff_id,
         username, 
         email , 
+        role
         password FROM users WHERE username = ? OR LOWER(email) = LOWER(?) `
 
         const [users]: any = await databaseConnection.execute(searchUserSQL, [identifier, identifier, identifier])
@@ -33,7 +35,7 @@ export async function POST(req: NextRequest) {
         if (users.length === 0 || !users) {
             return NextResponse.json({
                 message: "Invalid data , Please try again with other details"
-            });
+            } , {status : 401});
         }
 
         const user = users[0];
@@ -47,7 +49,13 @@ export async function POST(req: NextRequest) {
         }
 
         return NextResponse.json({
-            message: "Login Successfull"
+            message: "Login Successfull",
+            data : {
+                id :user.staff_id,
+                name: user.username,
+                role:user.role
+
+            }
         }, { status: 200 })
 
 

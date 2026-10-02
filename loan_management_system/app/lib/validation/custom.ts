@@ -12,6 +12,14 @@ export function validateCreateUser(data: any) {
         };
     }
 
+    if(!data || !data.userId){
+        return {
+            errors : {
+                body : "Invalid data is entered , please provide a user id"
+            }
+        }
+    }
+
 
 
     // Validate name
@@ -46,6 +54,24 @@ export function validateCreateUser(data: any) {
 
 };
 
+export function validateUserToSee(data:any){
+    const error: Record<string , string> = {};
+
+    if(!data || typeof data != "object"){
+        return {
+            isValid : false,
+            errors : {
+                body : "Invalid data entered try again later"
+            }
+        }
+    }
+
+    return {
+        isValid : Object.keys(error).length === 0,
+        error
+    }
+}
+
 //validate to find the user by id
 export function validateFindingUser(data: any) {
 
@@ -74,4 +100,24 @@ export function validateFindingUser(data: any) {
         errors
     }
 
+}
+
+export function updateUserdata(data: any){
+    const errors: Record<string, string> = {};
+
+    if(!data || typeof data !== "object"){
+        return {
+            isValid : false ,
+            message : {
+                body : "Invalid Payload"
+            }
+        }
+    }
+
+
+
+    return {
+        isValid : Object.keys(errors).length === 0,
+        errors
+    }
 }
