@@ -14,7 +14,8 @@ export async function POST(req: NextRequest) {
 
         if (!isValid) {
             return NextResponse.json({
-                message: "Please enter valid username , email and password"
+                message: "Please enter valid username , email and password",
+                errors
             }, { status: 400 })
         }
 
@@ -27,10 +28,10 @@ export async function POST(req: NextRequest) {
         staff_id,
         username, 
         email , 
-        role
-        password FROM users WHERE username = ? OR LOWER(email) = LOWER(?) `
+        role,
+        password FROM users WHERE username = ? OR LOWER(email) = LOWER(?) OR LOWER(staff_id) = ? `
 
-        const [users]: any = await databaseConnection.execute(searchUserSQL, [identifier, identifier, identifier])
+        const [users]: any = await databaseConnection.execute(searchUserSQL, [identifier, identifier , identifier])
 
         if (users.length === 0 || !users) {
             return NextResponse.json({

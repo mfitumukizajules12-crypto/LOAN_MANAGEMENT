@@ -57,7 +57,7 @@ export function validateCreateUser(data: any) {
 export function validateUserToSee(data:any){
     const error: Record<string , string> = {};
 
-    if(!data || typeof data != "object"){
+    if(!data || typeof data != "string"){
         return {
             isValid : false,
             errors : {
@@ -102,14 +102,50 @@ export function validateFindingUser(data: any) {
 
 }
 
-export function updateUserdata(data: any){
+export function updateUserdata(data: any , id: string){
     const errors: Record<string, string> = {};
+
+    if(!data || !id || typeof id !== "string" || typeof data !== "object"){
+        return {
+            isValid : false ,
+            message : {
+                body : "Invalid Payload, Please provide valid data"
+            }
+        }
+    }
+
+    if(!id.startsWith("lms_")){
+        return {
+            isValid : false,
+            message : {
+                body : "Please Provide valid staff id"
+            }
+        }
+    }
+
+  
+
+
+    return {
+        isValid : Object.keys(errors).length === 0,
+        errors
+    }
+}
+
+export function deleteUser(data : any){
+    const errors: Record<string, string> = {}
 
     if(!data || typeof data !== "object"){
         return {
             isValid : false ,
+            message : "Please Provide Valid payload"
+        }
+    }
+
+    if(!data.userId){
+        return {
             message : {
-                body : "Invalid Payload"
+                body : "Please Provide staff id on your card "
             }
         }
     }

@@ -1,0 +1,75 @@
+[33mcommit eb53cba6c5282f7b32dd0d5264ae10042449fd7b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/userAPI[m[33m)[m
+Author: Obama Mulondo Victor <obamamulondo6@gmail.com>
+Date:   Fri Oct 2 15:23:33 2026 +0200
+
+    add: the view the user by id fix: the route of the view by add
+    next time fix the view by id route no need for the parse of object json to the read read the url parameter api request
+
+[33mcommit 789203fe27941db52325ffc638d1ec64565dd6e0[m
+Author: mfitumukizajules <mfitumukizajules12@gmail.com>
+Date:   Thu Oct 1 06:51:51 2026 +0200
+
+    feat(database & api): simplify staff registration using MySQL virtual generated columns
+    
+    Refactor the staff and user registration flow to eliminate extra query round-trips and optimize database integrity.
+    
+    Key Changes:
+    - Database Schema:
+      * Added auto-incrementing `id` (BIGINT UNSIGNED) primary key to `staff` table.
+      * Converted `staff_id` into a STORED virtual generated column (`GENERATED ALWAYS AS (CONCAT('lms_', id)) STORED UNIQUE`).
+      * Re-indexed `staff_id` as UNIQUE and restored the foreign key `fk_users_staff` on `users(staff_id)` with CASCADE rules.
+      * Added schemas for `audit_logs` and `notifications` tables.
+    
+    - Backend API (`POST /api/user/create`):
+      * Refactored route handler to utilize connection pool transactions (`beginTransaction`, `commit`, `rollback`, `release`).
+      * Eliminated manual `UPDATE` statements for `staff_id` generation, relying natively on MySQL generated column values.
+      * Standardized input normalization (`trim().toLowerCase()`) for email and username inputs.
+      * Cleaned up duplicate/unused imports in the API route handler.
+
+[33mcommit a3da8c55aa17ccaab5520bc47db12f42fccdf891[m
+Author: mfitumukizajules <mfitumukizajules12@gmail.com>
+Date:   Wed Sep 30 21:11:43 2026 +0200
+
+    commit for push to use branch
+
+[33mcommit 08e8876f20cec871023e622f8e127c7bf1556bf1[m
+Author: mfitumukizajules <mfitumukizajules12@gmail.com>
+Date:   Wed Sep 30 21:10:48 2026 +0200
+
+    commit after commit and switch branch
+
+[33mcommit 8cf002f6ced96f936e78a0a8d851617abe1b175c[m[33m ([m[1;32mfeature/databaseInitialisation[m[33m)[m
+Author: mfitumukizajules <mfitumukizajules12@gmail.com>
+Date:   Wed Sep 30 21:07:34 2026 +0200
+
+    add: to add admin endpoint to the database after hard time of coding finally we get 201 status
+
+[33mcommit ccaf30e17919884bee5b8aedb64bb451134e97bf[m
+Author: mfitumukizajules <mfitumukizajules12@gmail.com>
+Date:   Wed Sep 30 18:33:43 2026 +0200
+
+    add: the user registration area api fix : the zod verification
+
+[33mcommit 4acfa06e205c919a524c09b1800503e6b71ea926[m[33m ([m[1;31morigin/feature/databaseInitialisation[m[33m, [m[1;32mmaster[m[33m)[m
+Author: mfitumukizajules <mfitumukizajules12@gmail.com>
+Date:   Mon Sep 28 18:24:10 2026 +0200
+
+    add : response json to reply
+
+[33mcommit 4758c5b4276a59a63fcd2a444690a49a5b6db45c[m
+Author: mfitumukizajules <mfitumukizajules12@gmail.com>
+Date:   Mon Sep 28 17:26:55 2026 +0200
+
+    add : an endpoint to test the connectivity to the database
+
+[33mcommit 834849f177147848ea44dab351d5c366fec1a933[m
+Author: mfitumukizajules <mfitumukizajules12@gmail.com>
+Date:   Mon Sep 28 16:53:17 2026 +0200
+
+    add : the needed dependecies for the usage in the app
+
+[33mcommit 2148c2a28a2ee6c19517cb9bcf5fc7440db5a374[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: mfitumukizajules <mfitumukizajules12@gmail.com>
+Date:   Mon Sep 28 15:23:32 2026 +0200
+
+    Initial commit before the project start fix:the database and more before impelementaion
